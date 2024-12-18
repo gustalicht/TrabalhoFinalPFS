@@ -1,4 +1,4 @@
-const { Receita, Conta, Categoria } = require('../models/receita');
+const { Receita, Conta, Categoria } = require('../models');
 
 module.exports = {
   async create(req, res) {

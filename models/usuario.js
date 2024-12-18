@@ -10,21 +10,21 @@ class Usuario extends Model {
           autoIncrement: true,
         },
         Nome: {
-          type: DataTypes.STRING(100),
+          type: DataTypes.STRING,
           allowNull: false,
         },
         Email: {
-          type: DataTypes.STRING(100),
+          type: DataTypes.STRING,
           allowNull: false,
           unique: true,
         },
         SenhaHash: {
-          type: DataTypes.STRING(256),
+          type: DataTypes.STRING,
           allowNull: false,
         },
         DataCriacao: {
           type: DataTypes.DATE,
-          defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
+          defaultValue: DataTypes.NOW,
         },
       },
       {
@@ -33,7 +33,10 @@ class Usuario extends Model {
         timestamps: false,
       }
     );
-    return this;
+  }
+
+  static associate(models) {
+    this.hasMany(models.Conta, { foreignKey: 'UsuarioID', as: 'contas' });
   }
 }
 

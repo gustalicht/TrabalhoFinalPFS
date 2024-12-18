@@ -1,20 +1,23 @@
-const { Conta, Usuario } = require('../models/conta');
+const { Conta, Usuario } = require('../models');
 
 module.exports = {
   async create(req, res) {
     try {
       const { UsuarioID, nome, saldo } = req.body;
 
-      // Verificar se o usuário existe
-      const user = await Usuario.findByPk(UsuarioID);
-      if (!user) {
-        return res.status(404).json({ message: 'Usuário não encontrado.' });
+      // Verifica se o usuário existe
+      const usuario = await Usuario.findByPk(UsuarioID);
+      if (!usuario) {
+        return res.status(404).json({ error: 'Usuário não encontrado.' });
       }
 
-      const conta = await Conta.create({ UsuarioID: UsuarioID, Nome: nome, Saldo: saldo });
+      // Cria a conta associada ao usuário
+      const conta = await Conta.create({ UsuarioID, Nome: nome, Saldo: saldo });
+
       return res.status(201).json({ message: 'Conta criada com sucesso!', conta });
     } catch (error) {
-      return res.status(500).json({ error: error.message });
+      console.error(error);
+      return res.status(500).json({ error: 'Erro ao criar a conta.' });
     }
   },
 

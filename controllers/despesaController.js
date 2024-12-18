@@ -1,4 +1,4 @@
-const { Despesa, Conta, Categoria } = require('../models/despesa');
+const { Despesa, Conta, Categoria } = require('../models');
 
 module.exports = {
   async create(req, res) {

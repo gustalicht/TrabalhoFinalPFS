@@ -10,26 +10,36 @@ class Conta extends Model {
           autoIncrement: true,
         },
         Nome: {
-          type: DataTypes.STRING(50),
+          type: DataTypes.STRING,
           allowNull: false,
         },
         Saldo: {
-          type: DataTypes.DECIMAL(18, 2),
-          allowNull: false,
+          type: DataTypes.FLOAT,
           defaultValue: 0.0,
         },
         UsuarioID: {
           type: DataTypes.INTEGER,
           allowNull: false,
+          references: {
+            model: 'Usuario',
+            key: 'ID',
+          },
+          onUpdate: 'CASCADE',
+          onDelete: 'CASCADE',
         },
       },
       {
         sequelize,
         tableName: 'Conta',
-        timestamps: false, // Remove os campos updatedAt e createdAt
+        timestamps: false,
       }
     );
-    return this;
+  }
+
+  static associate(models) {
+    this.belongsTo(models.Usuario, { foreignKey: 'UsuarioID', as: 'usuario' });
+    this.hasMany(models.Receita, { foreignKey: 'ContaID', as: 'receitas' });
+    this.hasMany(models.Despesa, { foreignKey: 'ContaID', as: 'despesas' });
   }
 }
 
