@@ -2,44 +2,15 @@ const { Model, DataTypes } = require('sequelize');
 
 class Conta extends Model {
   static init(sequelize) {
-    super.init(
+    return super.init(
       {
-        ID: {
-          type: DataTypes.INTEGER,
-          primaryKey: true,
-          autoIncrement: true,
-        },
-        Nome: {
-          type: DataTypes.STRING,
-          allowNull: false,
-        },
-        Saldo: {
-          type: DataTypes.FLOAT,
-          defaultValue: 0.0,
-        },
-        UsuarioID: {
-          type: DataTypes.INTEGER,
-          allowNull: false,
-          references: {
-            model: 'Usuario',
-            key: 'ID',
-          },
-          onUpdate: 'CASCADE',
-          onDelete: 'CASCADE',
-        },
+        ID: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+        UsuarioID: { type: DataTypes.INTEGER, allowNull: false },
+        Nome: { type: DataTypes.STRING, allowNull: false },
+        Saldo: { type: DataTypes.DECIMAL(18, 2), allowNull: false, defaultValue: 0.0 },
       },
-      {
-        sequelize,
-        tableName: 'Conta',
-        timestamps: false,
-      }
+      { sequelize, tableName: 'Conta', timestamps: false }
     );
-  }
-
-  static associate(models) {
-    this.belongsTo(models.Usuario, { foreignKey: 'UsuarioID', as: 'usuario' });
-    this.hasMany(models.Receita, { foreignKey: 'ContaID', as: 'receitas' });
-    this.hasMany(models.Despesa, { foreignKey: 'ContaID', as: 'despesas' });
   }
 }
 

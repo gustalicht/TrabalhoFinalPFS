@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const db = require('../config/database');
 
-// Importação dos modelos
+// Importação das models
 const UsuarioModel = require('./usuario');
 const ContaModel = require('./conta');
 const CategoriaModel = require('./categoria');
@@ -15,23 +15,23 @@ const Categoria = CategoriaModel.init(db, Sequelize);
 const Receita = ReceitaModel.init(db, Sequelize);
 const Despesa = DespesaModel.init(db, Sequelize);
 
-// Definição dos relacionamentos
-Usuario.hasMany(Conta, { foreignKey: 'UsuarioID' });
-Conta.belongsTo(Usuario, { foreignKey: 'UsuarioID' });
+// Definição dos relacionamentos APÓS a inicialização
+Usuario.hasMany(Conta, { foreignKey: 'UsuarioID', as: 'contas' });
+Conta.belongsTo(Usuario, { foreignKey: 'UsuarioID', as: 'usuario' });
 
-Conta.hasMany(Receita, { foreignKey: 'ContaID' });
-Receita.belongsTo(Conta, { foreignKey: 'ContaID' });
+Conta.hasMany(Receita, { foreignKey: 'ContaID', as: 'receitas' });
+Receita.belongsTo(Conta, { foreignKey: 'ContaID', as: 'conta' });
 
-Conta.hasMany(Despesa, { foreignKey: 'ContaID' });
-Despesa.belongsTo(Conta, { foreignKey: 'ContaID' });
+Conta.hasMany(Despesa, { foreignKey: 'ContaID', as: 'despesas' });
+Despesa.belongsTo(Conta, { foreignKey: 'ContaID', as: 'conta' });
 
-Categoria.hasMany(Receita, { foreignKey: 'CategoriaID' });
-Receita.belongsTo(Categoria, { foreignKey: 'CategoriaID' });
+Categoria.hasMany(Receita, { foreignKey: 'CategoriaID', as: 'receitas' });
+Receita.belongsTo(Categoria, { foreignKey: 'CategoriaID', as: 'categoria' });
 
-Categoria.hasMany(Despesa, { foreignKey: 'CategoriaID' });
-Despesa.belongsTo(Categoria, { foreignKey: 'CategoriaID' });
+Categoria.hasMany(Despesa, { foreignKey: 'CategoriaID', as: 'despesas' });
+Despesa.belongsTo(Categoria, { foreignKey: 'CategoriaID', as: 'categoria' });
 
-// Exporta os modelos e o banco de dados
+// Exportação das models
 module.exports = {
   db,
   Usuario,
