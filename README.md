@@ -1,7 +1,9 @@
-GranaEmDia 📊
+#GranaEmDia 📊
+
 Gerenciamento de finanças pessoais através de uma SPA com integração entre React (front-end) e Node.js + PostgreSQL (back-end).
 
-📋 Sumário
+#📋 Sumário
+
 Sobre o Projeto
 Funcionalidades Principais
 Tecnologias Utilizadas
@@ -12,19 +14,25 @@ Configuração do Banco de Dados
 Execução do Projeto
 Rotas da API
 Tela de Demonstração
-💡 Sobre o Projeto
+
+#💡 Sobre o Projeto
+
 O projeto GranaEmDia permite que os usuários possam gerenciar suas receitas e despesas financeiras através de uma aplicação moderna e intuitiva. Ele oferece recursos como:
 
 Cadastro/Login com autenticação via JWT.
 Gerenciamento de contas: Cadastro de contas com saldo inicial.
 Dashboard: Visualização gráfica de receitas, despesas e saldo atual com tendências.
-⚙️ Funcionalidades Principais
+
+#⚙️ Funcionalidades Principais
+
 Cadastro de usuário.
 Login seguro com validação e token JWT.
 Cadastro e listagem de receitas e despesas.
 Dashboard interativo com gráficos.
 Tendência financeira com base em receitas e despesas.
-🛠️ Tecnologias Utilizadas
+
+#🛠️ Tecnologias Utilizadas
+
 Back-end
 Node.js (ambiente de execução)
 Express (framework web)
@@ -38,13 +46,17 @@ React.js (biblioteca front-end)
 React Router (gerenciamento de rotas)
 Bootstrap (estilização e componentes)
 Recharts (gráficos interativos)
-⚡ Pré-requisitos
+
+#⚡ Pré-requisitos
+
 Antes de iniciar, você precisará ter as seguintes ferramentas instaladas:
 
 Node.js: Download Node.js
 PostgreSQL: Download PostgreSQL
 NPM ou Yarn (gerenciador de pacotes Node).
-🔧 Instalação do Back-end
+
+#🔧 Instalação do Back-end
+
 Clone o repositório:
 
 bash
@@ -81,7 +93,8 @@ Copiar código
 npm start
 O back-end estará rodando em http://localhost:3100.
 
-🌐 Instalação do Front-end
+#🌐 Instalação do Front-end
+
 Vá para a pasta do front-end:
 
 bash
@@ -99,7 +112,8 @@ Copiar código
 npm start
 O front-end estará disponível em http://localhost:3001.
 
-🗃️ Configuração do Banco de Dados
+#🗃️ Configuração do Banco de Dados
+
 Abra o pgAdmin (ou outra ferramenta para PostgreSQL).
 Crie um novo banco de dados chamado granaemdia.
 Execute as migrações do back-end com o comando:
@@ -112,10 +126,14 @@ Conta
 Receita
 Despesa
 Categoria
-🚀 Execução do Projeto
+
+#🚀 Execução do Projeto
+
 Back-end: Certifique-se de que o servidor está rodando em http://localhost:3100.
 Front-end: Inicie o projeto no navegador em http://localhost:3001.
-🛠️ Rotas da API
+
+#🛠️ Rotas da API
+
 Autenticação
 Método	Rota	Descrição
 POST	/api/usuarios/register	Cadastro de usuário
@@ -130,12 +148,14 @@ POST	/api/receitas	Cadastro de receitas
 Despesas
 Método	Rota	Descrição
 POST	/api/despesas	Cadastro de despesas
-📷 Tela de Demonstração
+
+#📷 Tela de Demonstração
 Login e Registro
 
 Dashboard
 
-📄 Manual Rápido
+#📄 Manual Rápido
+
 Clone o projeto.
 Instale as dependências.
 Configure o banco de dados no arquivo .env.
@@ -144,8 +164,10 @@ Teste as APIs usando Postman ou diretamente pelo front-end.
 💻 Ambiente de Desenvolvimento
 Back-end: http://localhost:3100
 Front-end: http://localhost:3001
-🤝 Contribuições
+
+#🤝 Contribuições
+
 Contribuições são bem-vindas! Se encontrar algum problema ou tiver sugestões, abra uma issue ou envie um pull request.
 
-👨‍💻 Autor
+#👨‍💻 Autor
 Desenvolvido por Gustavo Licht.
