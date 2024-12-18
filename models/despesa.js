@@ -12,10 +12,18 @@ class Despesa extends Model {
         ContaID: {
           type: DataTypes.INTEGER,
           allowNull: false,
+          references: {
+            model: 'Conta', // Nome da tabela no banco
+            key: 'ID', // Nome da coluna na tabela relacionada
+          },
         },
         CategoriaID: {
           type: DataTypes.INTEGER,
           allowNull: false,
+          references: {
+            model: 'Categoria', // Nome da tabela no banco
+            key: 'ID', // Nome da coluna na tabela relacionada
+          },
         },
         Valor: {
           type: DataTypes.DECIMAL(18, 2),

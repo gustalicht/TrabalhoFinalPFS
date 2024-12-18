@@ -12,10 +12,18 @@ class Receita extends Model {
         ContaID: {
           type: DataTypes.INTEGER,
           allowNull: false,
+          references: {
+            model: 'Conta', // Nome da tabela no banco
+            key: 'ID', // Nome da coluna na tabela relacionada
+          },
         },
         CategoriaID: {
           type: DataTypes.INTEGER,
           allowNull: false,
+          references: {
+            model: 'Categoria',
+            key: 'ID',
+          },
         },
         Valor: {
           type: DataTypes.DECIMAL(18, 2),
@@ -32,6 +40,7 @@ class Receita extends Model {
       {
         sequelize,
         tableName: 'Receita',
+         modelName: 'Receita',
         timestamps: false,
       }
     );

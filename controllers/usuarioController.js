@@ -4,7 +4,9 @@ const jwt = require('jsonwebtoken');
 
 const SECRET_KEY = process.env.JWT_SECRET || 'seusegredo';
 
-
+if (!SECRET_KEY) {
+  throw new Error('JWT_SECRET não está configurado. Verifique o arquivo .env');
+}
 module.exports = {
   async register(req, res) {
     try {
@@ -50,11 +52,13 @@ module.exports = {
       }
 
       // Gerar token JWT
-      const token = jwt.sign({ id: user.ID, email: user.Email }, process.env.SECRET_KEY, {
+      const token = jwt.sign({ id: user.ID, email: user.Email }, SECRET_KEY, {
         expiresIn: '1h',
       });
+       // Gerar Refresh Token
+       const refreshToken = jwt.sign({ id: user.ID }, REFRESH_SECRET_KEY, { expiresIn: '7d' });
 
-      return res.status(200).json({ token });
+       return res.status(200).json({ accessToken, refreshToken });
     } catch (error) {
       console.error(error);
       return res.status(500).json({ error: error.message });

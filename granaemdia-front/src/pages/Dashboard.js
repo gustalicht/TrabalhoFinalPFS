@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -6,34 +7,46 @@ const Dashboard = () => {
   const [saldoAtual, setSaldoAtual] = useState(0);
   const [receitas, setReceitas] = useState([]);
   const [despesas, setDespesas] = useState([]);
+  const token = localStorage.getItem('token'); // Obtém o token JWT do localStorage
 
-  // Simula o carregamento das receitas, despesas e saldo inicial
+  // Função para buscar dados das APIs
+  const fetchDados = async () => {
+    try {
+      const responseContas = await axios.get('http://localhost:3100/api/contas', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const contasData = responseContas.data;
+
+      const responseReceitas = await axios.get('http://localhost:3100/api/receitas', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const receitasData = responseReceitas.data;
+
+      const responseDespesas = await axios.get('http://localhost:3100/api/despesas', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const despesasData = responseDespesas.data;
+
+      // Calcula o saldo atual
+      const saldoInicial = contasData[0]?.saldo || 0;
+      const totalReceitas = receitasData.reduce((acc, receita) => acc + receita.valor, 0);
+      const totalDespesas = despesasData.reduce((acc, despesa) => acc + despesa.valor, 0);
+
+      setReceitas(receitasData);
+      setDespesas(despesasData);
+      setSaldoAtual(saldoInicial + totalReceitas - totalDespesas);
+    } catch (error) {
+      console.error('Erro ao buscar dados:', error);
+    }
+  };
+
   useEffect(() => {
-    // Substituir com chamadas à API quando o back-end estiver pronto
-    const fetchDados = async () => {
-      try {
-        const responseContas = await fetch('http://localhost:3100/api/contas');
-        const contasData = await responseContas.json();
-
-        const responseReceitas = await fetch('http://localhost:3100/api/receitas');
-        const receitasData = await responseReceitas.json();
-
-        const responseDespesas = await fetch('http://localhost:3100/api/despesas');
-        const despesasData = await responseDespesas.json();
-
-        // Simula o saldo inicial da conta e atualiza com base em receitas e despesas
-        const saldoInicial = contasData[0]?.saldo || 0;
-        const totalReceitas = receitasData.reduce((acc, receita) => acc + receita.valor, 0);
-        const totalDespesas = despesasData.reduce((acc, despesa) => acc + despesa.valor, 0);
-
-        setReceitas(receitasData);
-        setDespesas(despesasData);
-        setSaldoAtual(saldoInicial + totalReceitas - totalDespesas);
-      } catch (error) {
-        console.error('Erro ao buscar dados:', error);
-      }
-    };
-
     fetchDados();
   }, []);
 
@@ -49,10 +62,10 @@ const Dashboard = () => {
         <div className="container">
           <span className="navbar-brand">Painel Financeiro</span>
           <div>
-            <Link to="/adicionar-receita" className="btn btn-light me-2">
+            <Link to="/adicionar-receita" className="btn btn-primary me-2">
               Adicionar Receita
             </Link>
-            <Link to="/adicionar-despesa" className="btn btn-light">
+            <Link to="/adicionar-despesa" className="btn btn-danger">
               Adicionar Despesa
             </Link>
           </div>

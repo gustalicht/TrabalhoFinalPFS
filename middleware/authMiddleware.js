@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const SECRET_KEY = process.env.JWT_SECRET || 'seusegredo';
+const SECRET_KEY = process.env.JWT_SECRET || '72a00b874fc851ef89dbf4d85efc7385352c8e049e732f6681f76e7d893064b990418ae15e4d4a012b5eca810062e8c2a2af55f1b3930f35761121412a392398';
 
 const authMiddleware = (req, res, next) => {
   const token = req.header('Authorization')?.split(' ')[1]; // Pega o token do header

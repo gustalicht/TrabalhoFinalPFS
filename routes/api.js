@@ -15,7 +15,10 @@ router.post('/contas', authMiddleware, contaController.create);
 router.get('/contas', authMiddleware, contaController.getAll);
 
 router.post('/receitas', authMiddleware, receitaController.create);
+router.get('/receitas', authMiddleware, receitaController.getAllReceitas);
+
 router.post('/despesas', authMiddleware, despesaController.create);
+router.get('/despesas', authMiddleware, despesaController.getAllDespesas);
 
 router.get('/categorias', authMiddleware, categoriaController.getAll);
 router.post('/categorias', authMiddleware, categoriaController.create);
