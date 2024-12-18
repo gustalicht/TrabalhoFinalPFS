@@ -1,39 +1,52 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom'; 
-import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Login = () => {
-  const [formData, setFormData] = useState({ email: '', senha: '' });
   const [showPassword, setShowPassword] = useState(false);
+  const [formData, setFormData] = useState({ Email: '', senha: '' });
   const [error, setError] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const navigate = useNavigate(); // Hook para redirecionamento
+  const navigate = useNavigate();
+
+  const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email); // Validação de e-mail
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
-
   const handleSubmit = async (e) => {
-      e.preventDefault();
-      console.log({ email, password });
-      // Aqui você pode adicionar a lógica para conectar com o backend
-      try {
-        const response = await fetch('http://localhost:3100/api/usuarios/login',formData);   // Verifica se o login foi bem-sucedido
-        if (response.data.token) {
-          localStorage.setItem('token', response.data.token); // Armazena o token no localStorage
-          navigate('/dashboard'); // Redireciona para o Dashboard
-        }
-      } catch (err) {
-        setError('Email ou senha inválidos. Tente novamente.');
+    e.preventDefault();
+    setError('');
+
+    // Validação do e-mail
+    if (!validateEmail(formData.Email)) {
+      setError('Por favor, insira um e-mail válido.');
+      return;
+    }
+
+    try {
+      const response = await fetch('http://localhost:3100/api/usuarios/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+      const data = await response.json();
+
+      if (response.ok) {
+        alert('Login realizado com sucesso!');
+        navigate('/dashboard'); // Redireciona para o Dashboard
+      } else {
+        setError('E-mail ou senha inválidos.');
       }
+    } catch (error) {
+      console.error('Erro ao realizar login:', error);
+      setError('Erro ao conectar com o servidor. Tente novamente.');
+    }
   };
 
   return (
@@ -44,7 +57,7 @@ const Login = () => {
       }}
     >
       <div className="card p-4 shadow" style={{ maxWidth: '400px', width: '100%' }}>
-        <h2 className="text-center mb-4">Bem-vindo(a)!</h2>
+        <h2 className="text-center mb-4">Conecte-se</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
             <label htmlFor="email" className="form-label">
@@ -53,25 +66,27 @@ const Login = () => {
             <input
               type="email"
               id="email"
+              name="Email"
               className="form-control"
               placeholder="example@gmail.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={formData.Email}
+              onChange={handleChange}
               required
             />
           </div>
 
           <div className="mb-3 position-relative">
-            <label htmlFor="password" className="form-label">
+            <label htmlFor="senha" className="form-label">
               Senha
             </label>
             <input
               type={showPassword ? 'text' : 'password'}
-              id="password"
+              id="senha"
+              name="senha"
               className="form-control"
               placeholder="******"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={formData.senha}
+              onChange={handleChange}
               required
             />
             <button
@@ -84,21 +99,16 @@ const Login = () => {
             </button>
           </div>
 
-          <div className="mb-3 form-check">
-            <input type="checkbox" className="form-check-input" id="rememberMe" />
-            <label className="form-check-label" htmlFor="rememberMe">
-              Lembrar senha
-            </label>
-          </div>
+          {error && <p className="text-danger text-center">{error}</p>}
 
           <button type="submit" className="btn btn-primary w-100" style={{ backgroundColor: '#89A8B2', border: 'none' }}>
-            Login
+            Entrar
           </button>
         </form>
 
         <div className="text-center mt-3">
           <p>
-            Ainda não possui uma conta?{' '}
+            Não possui uma conta?{' '}
             <Link to="/register" className="fw-bold" style={{ color: '#89A8B2' }}>
               Cadastre-se
             </Link>

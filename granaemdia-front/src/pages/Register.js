@@ -1,20 +1,19 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
-    nome: '',
-    email: '',
+    Nome: '',
+    Email: '',
     senha: '',
   });
+  const [error, setError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+  const navigate = useNavigate();
 
-  const validateEmail = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Validação básica de email
-    return emailRegex.test(email);
-  };
-  
+  const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email); // Validação de e-mail
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -27,21 +26,32 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
+    setSuccessMessage('');
+
+    // Validação do e-mail
+    if (!validateEmail(formData.email)) {
+      setError('Por favor, insira um e-mail válido.');
+      return;
+    }
+
     try {
-      if (!validateEmail(formData.email)) {
-        setError('Por favor, insira um e-mail válido.');
-        return; // Interrompe a execução se o e-mail for inválido
-      }
       const response = await fetch('http://localhost:3100/api/usuarios/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
       const data = await response.json();
-      console.log(data);
-      alert('Cadastro realizado com sucesso!');
+
+      if (response.ok) {
+        setSuccessMessage('Cadastro realizado com sucesso!');
+        setTimeout(() => navigate('/login'), 2000); // Redireciona após 2 segundos
+      } else {
+        setError(data.message || 'Erro ao realizar cadastro.');
+      }
     } catch (error) {
       console.error('Erro ao realizar cadastro:', error);
+      setError('Erro ao conectar com o servidor. Tente novamente.');
     }
   };
 
@@ -77,11 +87,11 @@ const Register = () => {
             </label>
             <input
               type="email"
-              id="email"
-              name="email"
+              id="Email"
+              name="Email"
               className="form-control"
               placeholder="example@gmail.com"
-              value={formData.email}
+              value={formData.Emailmail}
               onChange={handleChange}
               required
             />
@@ -110,6 +120,9 @@ const Register = () => {
               {showPassword ? '🙈' : '👁️'}
             </button>
           </div>
+
+          {error && <p className="text-danger text-center">{error}</p>}
+          {successMessage && <p className="text-success text-center">{successMessage}</p>}
 
           <button type="submit" className="btn btn-primary w-100" style={{ backgroundColor: '#89A8B2', border: 'none' }}>
             Cadastrar
