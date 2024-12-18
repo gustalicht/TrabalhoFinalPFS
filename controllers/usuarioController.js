@@ -2,6 +2,9 @@ const { Usuario } = require('../models');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
+const SECRET_KEY = process.env.JWT_SECRET || 'seusegredo';
+
+
 module.exports = {
   async register(req, res) {
     try {
@@ -47,7 +50,7 @@ module.exports = {
       }
 
       // Gerar token JWT
-      const token = jwt.sign({ id: user.ID, email: user.Email }, process.env.JWT_SECRET, {
+      const token = jwt.sign({ id: user.ID, email: user.Email }, process.env.SECRET_KEY, {
         expiresIn: '1h',
       });
 

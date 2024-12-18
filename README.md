@@ -171,3 +171,6 @@ Contribuições são bem-vindas! Se encontrar algum problema ou tiver sugestões
 
 #👨‍💻 Autor
 Desenvolvido por Gustavo Licht.
+
+
+#lEMBRAR DAS GAMBIARRAS RELACIONADAS AO BANCO, QUALQUER COISA ALTERAR O NOME DAS COLUNAS DO BANCO, JÁ QUE O ORM FICA ALTERANDO SOZINHO 

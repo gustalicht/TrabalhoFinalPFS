@@ -38,8 +38,10 @@ const Login = () => {
       const data = await response.json();
 
       if (response.ok) {
+        localStorage.setItem('token', data.token);
         alert('Login realizado com sucesso!');
-        navigate('/dashboard'); // Redireciona para o Dashboard
+        setFormData({ Email: '', senha: '' });
+        navigate('/contas/create'); // Redireciona para o Dashboard
       } else {
         setError('E-mail ou senha inválidos.');
       }

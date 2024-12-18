@@ -13,7 +13,7 @@ const Register = () => {
   const [successMessage, setSuccessMessage] = useState('');
   const navigate = useNavigate();
 
-  const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email); // Validação de e-mail
+  const validateEmail = (Email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(Email); // Validação de e-mail
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -30,7 +30,7 @@ const Register = () => {
     setSuccessMessage('');
 
     // Validação do e-mail
-    if (!validateEmail(formData.email)) {
+    if (!validateEmail(formData.Email)) {
       setError('Por favor, insira um e-mail válido.');
       return;
     }
@@ -45,6 +45,7 @@ const Register = () => {
 
       if (response.ok) {
         setSuccessMessage('Cadastro realizado com sucesso!');
+        setFormData({Nome:'', Email: '', senha: '' });
         setTimeout(() => navigate('/login'), 2000); // Redireciona após 2 segundos
       } else {
         setError(data.message || 'Erro ao realizar cadastro.');
@@ -71,11 +72,11 @@ const Register = () => {
             </label>
             <input
               type="text"
-              id="nome"
-              name="nome"
+              id="Nome"
+              name="Nome"
               className="form-control"
               placeholder="Seu nome completo"
-              value={formData.nome}
+              value={formData.Nome}
               onChange={handleChange}
               required
             />
@@ -91,7 +92,7 @@ const Register = () => {
               name="Email"
               className="form-control"
               placeholder="example@gmail.com"
-              value={formData.Emailmail}
+              value={formData.Email}
               onChange={handleChange}
               required
             />

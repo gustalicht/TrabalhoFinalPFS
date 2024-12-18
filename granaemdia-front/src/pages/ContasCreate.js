@@ -2,8 +2,12 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const CreateAccount = () => {
-  const [formData, setFormData] = useState({ Nome: '', Saldo: '' });
+const ContasCreate = () => {
+  const [formData, setFormData] = useState({
+    UsuarioID: '', // O ID do usuário que já está autenticado
+    nome: '',
+    saldo: '',
+  });
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
@@ -14,30 +18,21 @@ const CreateAccount = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
-
     try {
-      const token = localStorage.getItem('token'); // Pega o token salvo no login
+      const token = localStorage.getItem('token');
       const response = await fetch('http://localhost:3100/api/contas', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}`, },
         body: JSON.stringify(formData),
       });
-
-      const data = await response.json();
-
       if (response.ok) {
         alert('Conta criada com sucesso!');
         navigate('/dashboard'); // Redireciona para o dashboard
       } else {
-        setError(data.message || 'Erro ao criar conta.');
+        setError('Erro ao criar conta. Verifique os dados.');
       }
-    } catch (error) {
-      console.error('Erro ao criar conta:', error);
-      setError('Erro ao conectar ao servidor.');
+    } catch (err) {
+      setError('Erro ao conectar com o servidor.');
     }
   };
 
@@ -50,44 +45,44 @@ const CreateAccount = () => {
         <h2 className="text-center mb-4">Criar Conta</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
-            <label htmlFor="Nome" className="form-label">
-              Nome da Conta
-            </label>
+            <label className="form-label">ID do Usuário</label>
             <input
               type="text"
-              id="Nome"
-              name="Nome"
-              className="form-control"
-              placeholder="Nome da conta"
-              value={formData.Nome}
+              name="UsuarioID"
+              value={formData.UsuarioID}
               onChange={handleChange}
+              className="form-control"
               required
             />
           </div>
 
           <div className="mb-3">
-            <label htmlFor="Saldo" className="form-label">
-              Saldo Inicial
-            </label>
+            <label className="form-label">Nome da Conta</label>
             <input
-              type="number"
-              id="Saldo"
-              name="Saldo"
-              className="form-control"
-              placeholder="Saldo atual"
-              value={formData.Saldo}
+              type="text"
+              name="nome"
+              value={formData.nome}
               onChange={handleChange}
+              className="form-control"
               required
             />
           </div>
 
-          {error && <p className="text-danger text-center">{error}</p>}
+          <div className="mb-3">
+            <label className="form-label">Saldo Inicial</label>
+            <input
+              type="number"
+              name="saldo"
+              value={formData.saldo}
+              onChange={handleChange}
+              className="form-control"
+              required
+            />
+          </div>
 
-          <button
-            type="submit"
-            className="btn btn-primary w-100"
-            style={{ backgroundColor: '#89A8B2', border: 'none' }}
-          >
+          {error && <p className="text-danger">{error}</p>}
+
+          <button type="submit" className="btn btn-primary w-100" style={{ backgroundColor: '#89A8B2' }}>
             Criar Conta
           </button>
         </form>
@@ -96,4 +91,4 @@ const CreateAccount = () => {
   );
 };
 
-export default CreateAccount;
+export default ContasCreate;
